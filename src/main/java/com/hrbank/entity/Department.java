@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Entity
 @Table(name = "departments")
@@ -16,7 +15,7 @@ public class Department {
 
     @Id
     @GeneratedValue
-    private UUID id;
+    private Long id;
 
     @Column(length = 100, nullable = false, unique = true)
     private String name;
