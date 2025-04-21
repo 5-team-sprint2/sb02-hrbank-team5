@@ -20,7 +20,7 @@ public class EmployeeChangeLogDetail {
 
   @Id
   @GeneratedValue
-  private UUID id;
+  private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "change_log_id")

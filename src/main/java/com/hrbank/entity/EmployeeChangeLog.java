@@ -25,7 +25,7 @@ public class EmployeeChangeLog {
 
   @Id
   @GeneratedValue
-  private UUID id;
+  private Long id;
 
   // 유형
   @Enumerated(EnumType.STRING)
