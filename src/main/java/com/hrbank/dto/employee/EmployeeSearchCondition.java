@@ -16,7 +16,7 @@ public class EmployeeSearchCondition {
   private LocalDate hireDateFrom;
   private LocalDate hireDateTo;
   private EmployeeStatus status;
-  private UUID lastId; // 커서 기반 페이징용
+  private Long lastId; // 커서 기반 페이징용
   private String sortBy; // name, hireDate, employeeNumber 중 하나
 }
 

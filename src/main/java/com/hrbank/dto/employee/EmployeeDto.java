@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public record EmployeeDto(
-    UUID id,
+    Long id,
     String name,
     String email,
     String employeeNumber,
