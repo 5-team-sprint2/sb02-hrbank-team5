@@ -1,0 +1,60 @@
+package com.hrbank.repository;
+
+import com.hrbank.dto.department.DepartmentDto;
+import com.hrbank.entity.Department;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+public interface DepartmentRepository extends JpaRepository<Department, UUID> {
+
+    //이름으로 부서 조회(중복 검사용)
+    Optional<Department> findByName(String name);
+
+    //이름이 다른 부서 중에서 동일한 이름이 있는지 확인(수정 시 사용)
+    Optional<Department> findByNameExcludingId(String name, UUID id);
+
+    //이름 또는 설명으로 부분 일치 검색
+    @Query("SELECT d FROM Department d WHERE " +
+            "(:name IS NULL OR LOWER(d.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
+            "(:description IS NULL OR LOWER(d.description) LIKE LOWER(CONCAT('%', :description, '%')))")
+    List<Department> findByNameContainingOrDescriptionContaining(
+            @Param("name") String name,
+            @Param("description") String description);
+
+    // 이름으로 정렬하여 커서 기반 페이지네이션
+    @Query("SELECT d FROM Department d WHERE " +
+            "(:name IS NULL OR LOWER(d.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
+            "(:description IS NULL OR LOWER(d.description) LIKE LOWER(CONCAT('%', :description, '%'))) AND " +
+            "(:lastId IS NULL OR d.name > (SELECT d2.name FROM Department d2 WHERE d2.id = :lastId)) " +
+            "ORDER BY d.name ASC")
+    List<Department> findByNameContainingOrDescriptionContainingOrderByNameAsc(
+            @Param("name") String name,
+            @Param("description") String description,
+            @Param("lastId") UUID lastId,
+            @Param("limit") int limit);
+
+    // 설립일로 정렬하여 커서 기반 페이지네이션
+    @Query("SELECT d FROM Department d WHERE " +
+            "(:name IS NULL OR LOWER(d.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
+            "(:description IS NULL OR LOWER(d.description) LIKE LOWER(CONCAT('%', :description, '%'))) AND " +
+            "(:lastId IS NULL OR " +
+            "(d.establishedDate > (SELECT d2.establishedDate FROM Department d2 WHERE d2.id = :lastId)) OR " +
+            "(d.establishedDate = (SELECT d2.establishedDate FROM Department d2 WHERE d2.id = :lastId) AND " +
+            "d.id > :lastId)) " +
+            "ORDER BY d.establishedDate ASC, d.id ASC")
+    List<Department> findByNameContainingOrDescriptionContainingOrderByEstablishedDateAsc(
+            @Param("name") String name,
+            @Param("description") String description,
+            @Param("lastId") UUID lastId,
+            @Param("limit") int limit);
+
+    // 부서에 소속된 직원이 있는지 확인
+    @Query("SELECT COUNT(e) > 0 FROM Employee e WHERE e.department.id = :departmentId")
+    boolean hasEmployees(@Param("departmentId") UUID departmentId);
+
+}
