@@ -1,6 +1,7 @@
 package com.hrbank.repository;
 
 import com.hrbank.dto.employee.CursorPageResponseEmployeeDto;
+import com.hrbank.dto.employee.EmployeeSearchCondition;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

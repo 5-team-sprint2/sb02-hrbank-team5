@@ -12,20 +12,18 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import java.time.LocalDate;
-import java.util.UUID;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
-@NoArgsConstructor
-
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Employee {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private UUID id;
+  private Long id;
 
   @Column(nullable = false)
   private String name;
@@ -50,7 +48,35 @@ public class Employee {
   @Column(nullable = false)
   private EmployeeStatus status;
 
-  @OneToOne(fetch = FetchType.LAZY)
+  @OneToOne
   @JoinColumn(name = "profile_image_id")
   private BinaryContent profileImage;
+
+  // 필수 필드를 초기화하는 생성자
+  public Employee(String name, String email, String employeeNumber, Department department, String position, LocalDate hireDate, EmployeeStatus status) {
+    this.name = name;
+    this.email = email;
+    this.employeeNumber = employeeNumber;
+    this.department = department;
+    this.position = position;
+    this.hireDate = hireDate;
+    this.status = status;
+  }
+
+  // 상태 변경 메서드
+  public void changeDepartment(Department newDepartment) {
+    this.department = newDepartment;
+  }
+
+  public void changePosition(String newPosition) {
+    this.position = newPosition;
+  }
+
+  public void changeStatus(EmployeeStatus newStatus) {
+    this.status = newStatus;
+  }
+
+  public void changeProfileImage(BinaryContent newProfileImage) {
+    this.profileImage = newProfileImage;
+  }
 }

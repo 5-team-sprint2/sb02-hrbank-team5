@@ -1,6 +1,7 @@
 package com.hrbank.controller;
 
 import com.hrbank.dto.employee.CursorPageResponseEmployeeDto;
+import com.hrbank.dto.employee.EmployeeSearchCondition;
 import com.hrbank.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
