@@ -81,11 +81,11 @@ public class BasicEmployeeChangeLogService implements EmployeeChangeLogService {
   @Override
   public Page<EmployeeChangeLog> searchLogs(EmployeeChangeLogSearchRequest request, Pageable pageable) {
     Specification<EmployeeChangeLog> spec = Specification.<EmployeeChangeLog>where(null)
-        .and(EmployeeChangeLogSpecification.employeeNumberContains(request.getEmployeeNumber()))
-        .and(EmployeeChangeLogSpecification.memoContains(request.getMemo()))
-        .and(EmployeeChangeLogSpecification.ipAddressContains(request.getIpAddress()))
-        .and(EmployeeChangeLogSpecification.typeEquals(request.getType()))
-        .and(EmployeeChangeLogSpecification.atBetween(request.getAtFrom(), request.getAtTo()));
+        .and(EmployeeChangeLogSpecification.employeeNumberContains(request.employeeNumber()))
+        .and(EmployeeChangeLogSpecification.memoContains(request.memo()))
+        .and(EmployeeChangeLogSpecification.ipAddressContains(request.ipAddress()))
+        .and(EmployeeChangeLogSpecification.typeEquals(request.type()))
+        .and(EmployeeChangeLogSpecification.atBetween(request.atFrom(), request.atTo()));
 
     return changeLogRepository.findAll(spec, pageable);
   }
@@ -93,6 +93,11 @@ public class BasicEmployeeChangeLogService implements EmployeeChangeLogService {
   @Override
   public Optional<EmployeeChangeLog> findWithDetailsById(UUID id) {
     return changeLogRepository.findById(id); // 추후 fetch join 필요하면 custom query로 변경
+  }
+
+  @Override
+  public boolean hasChangeSince(LocalDateTime at) {
+    return changeLogRepository.existsByAtAfter(at);
   }
 
   // 변경된 로그를 저장하는 메서드. 반복되어 별도 분리
