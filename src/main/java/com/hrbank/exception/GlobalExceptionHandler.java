@@ -1,6 +1,5 @@
 package com.hrbank.exception;
 
-import com.hrbank.dto.error.ErrorResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -10,9 +9,12 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(RestException.class)
   public ResponseEntity<ErrorResponse> handleRestException(RestException e) {
-    return ResponseEntity.status(e.getStatus())
-        .body(new ErrorResponse(e.getMessage()));
+    ErrorCode errorCode = e.getErrorCode();
+    return ResponseEntity
+        .status(errorCode.getStatus())
+        .body(new ErrorResponse(errorCode.name(), errorCode.getMessage()));
   }
 
-  // 필요 시 다른 예외 처리도 추가 가능
+  // 예외 응답 구조
+  public record ErrorResponse(String code, String message) {}
 }
