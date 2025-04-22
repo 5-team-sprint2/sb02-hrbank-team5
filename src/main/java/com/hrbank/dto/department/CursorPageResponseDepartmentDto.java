@@ -6,8 +6,8 @@ public record CursorPageResponseDepartmentDto(
         List<DepartmentDto> content,
         String nextCursor,
         Long nextIdAfter,
-        Integer size,
+        int size,
         Long totalElements,
-        Boolean hasNext
+        boolean hasNext
 ) {}
 
