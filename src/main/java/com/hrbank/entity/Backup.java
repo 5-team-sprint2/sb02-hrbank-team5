@@ -36,7 +36,7 @@ public class Backup {
   @Column(name = "started_at", nullable = false)
   private Instant startedAt;
 
-  @Column(name = "ended_at")
+  @Column(name = "ended_at", nullable = false)
   private Instant endedAt;
 
   @Enumerated(EnumType.STRING)
