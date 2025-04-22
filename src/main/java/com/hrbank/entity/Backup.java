@@ -34,7 +34,7 @@ public class Backup {
   @Column(nullable = false)
   private String worker;
 
-  @Column(name = "started_at")
+  @Column(name = "started_at", nullable = false)
   private Instant startedAt;
 
   @Column(name = "ended_at")
