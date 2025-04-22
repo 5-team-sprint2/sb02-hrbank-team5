@@ -11,12 +11,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "employees")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Employee {
@@ -48,7 +50,7 @@ public class Employee {
   @Column(nullable = false)
   private EmployeeStatus status;
 
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "profile_image_id")
   private BinaryContent profileImage;
 
