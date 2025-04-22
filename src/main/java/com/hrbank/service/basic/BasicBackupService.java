@@ -222,7 +222,7 @@ public class BasicBackupService implements BackupService {
 
     try (
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(csvFile), StandardCharsets.UTF_8));
-        CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("ID", "직원번호", "이름", "이메일", "부서", "직급", "입사일", "상태"))
+        CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(EmployeeCsvHeader.class))
     ) {
       for (Employee employee : employees) {
         csvPrinter.printRecord(
