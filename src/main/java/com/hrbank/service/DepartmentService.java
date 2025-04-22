@@ -5,8 +5,6 @@ import com.hrbank.dto.department.DepartmentCreateRequest;
 import com.hrbank.dto.department.DepartmentDto;
 import com.hrbank.dto.department.DepartmentUpdateRequest;
 
-import java.util.UUID;
-
 public interface DepartmentService {
     DepartmentDto createDepartment(DepartmentCreateRequest request);
     DepartmentDto getDepartmentById(Long id);
