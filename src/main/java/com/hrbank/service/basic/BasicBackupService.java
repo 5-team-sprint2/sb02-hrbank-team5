@@ -38,11 +38,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class BasicBackupService implements BackupService {
 
-  private BackupRepository backupRepository;
-  private BackupMapper backupMapper;
-  private EmployeeRepository employeeRepository;
-  private EmployeeChangeLogRepository employeeChangeLogRepository
-  private BinaryContentRepository binaryContentRepository;
+  private final BackupRepository backupRepository;
+  private final BackupMapper backupMapper;
+  private final EmployeeRepository employeeRepository;
+  private final EmployeeChangeLogRepository employeeChangeLogRepository
+  private final BinaryContentRepository binaryContentRepository;
 
   @Override
   public void runBackup(String requesterIp) {
