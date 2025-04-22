@@ -9,6 +9,7 @@ public record EmployeeCreateRequest(
     Long departmentId,
     String position,
     LocalDate hireDate,
-    Long profileImageId
+    Long profileImageId,
+    String memo
     // 사번과 상태는 서버에서 자동 생성 / 초기화할 예정이니 입력받지 않음
 ) {}
