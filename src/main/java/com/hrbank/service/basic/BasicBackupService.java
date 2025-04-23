@@ -64,7 +64,6 @@ public class BasicBackupService implements BackupService {
     filtered.sort(comparator);
 
     // 커서 디코딩 및 시작 인덱스 계산
-    int finalSize = (size == null || size <= 0) ? 10 : size;
     int startIndex = 0;
     Long cursorId = null;
 
@@ -80,7 +79,7 @@ public class BasicBackupService implements BackupService {
     }
 
     // 페이지 처리
-    int endIndex = Math.min(startIndex + finalSize, filtered.size());
+    int endIndex = Math.min(startIndex + size, filtered.size());
     List<BackupDto> page = filtered.subList(startIndex, endIndex).stream()
         .map(backupMapper::toDto)
         .toList();
@@ -93,7 +92,7 @@ public class BasicBackupService implements BackupService {
         page,
         nextCursor,
         nextIdAfter,
-        finalSize,
+        size,
         filtered.size(),
         hasNext
     );
