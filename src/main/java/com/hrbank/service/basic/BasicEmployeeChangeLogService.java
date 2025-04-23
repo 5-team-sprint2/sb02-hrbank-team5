@@ -77,7 +77,6 @@ public class BasicEmployeeChangeLogService implements EmployeeChangeLogService {
     // 4. 저장
     changeLogRepository.save(changeLog);
   }
-
   @Override
   public Page<EmployeeChangeLog> searchLogs(EmployeeChangeLogSearchRequest request, Pageable pageable) {
     Specification<EmployeeChangeLog> spec = Specification.<EmployeeChangeLog>where(null)
