@@ -162,7 +162,7 @@ public class BasicEmployeeChangeLogService implements EmployeeChangeLogService {
 
   // 변경된 로그를 저장하는 메서드. 반복되어 별도 분리
   private void addDetailIfChanged(EmployeeChangeLog log, String field, String before, String after) {
-    if (Objects.equals(before, after) != true) {
+    if (!Objects.equals(before, after)) {
       log.addDetail(new EmployeeChangeLogDetail(log, field, before, after));
     }
   }
