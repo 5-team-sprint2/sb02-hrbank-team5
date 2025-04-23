@@ -22,6 +22,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Comparator;
 import java.util.List;
@@ -49,7 +50,7 @@ public class BasicBackupService implements BackupService {
 
   @Override
   public CursorPageResponseBackupDto searchBackups(
-      String worker, BackupStatus status, Instant from, Instant to,
+      String worker, BackupStatus status, LocalDateTime from, LocalDateTime to,
       Long id, String cursor, Integer size, String sortField, String sortDirection) {
 
     // 필터링
@@ -124,8 +125,8 @@ public class BasicBackupService implements BackupService {
       Backup skipped = Backup.builder()
           .worker(requesterIp)
           .status(BackupStatus.SKIPPED)
-          .startedAt(Instant.now())
-          .endedAt(Instant.now())
+          .startedAt(LocalDateTime.now())
+          .endedAt(LocalDateTime.now())
           .build();
       backupRepository.save(skipped);
       return backupMapper.toDto(skipped);
@@ -160,18 +161,18 @@ public class BasicBackupService implements BackupService {
       return true;
     }
 
-    Instant lastBackupTime = lastCompletedBackup.get().getEndedAt();
+    LocalDateTime lastBackupTime = lastCompletedBackup.get().getEndedAt();
 
     // 특정 시간 이후 직원 업데이트 내역 확인
     // 추후 구현 필요
-    return employeeChangeLogRepository.existsByUpdatedAtAfter(lastBackupTime);
+    return employeeChangeLogRepository.existsByAtAfter(lastBackupTime);
   }
 
   private BackupDto createInProgressBackup(String requesterIp) {
     Backup backup = Backup.builder()
         .worker(requesterIp)
         .status(BackupStatus.IN_PROGRESS)
-        .startedAt(Instant.now())
+        .startedAt(LocalDateTime.now())
         .build();
 
     Backup saved = backupRepository.save(backup);
