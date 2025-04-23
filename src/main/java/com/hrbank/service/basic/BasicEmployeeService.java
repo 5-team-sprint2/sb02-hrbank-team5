@@ -64,7 +64,7 @@ public class BasicEmployeeService implements EmployeeService {
 
         // 기존 프로필 이미지 삭제
         if (employee.getProfileImage() != null) {
-            binaryContentService.delete(employee.getProfileImage());
+            binaryContentService.delete(employee.getProfileImage().getId());
         }
     }
 
@@ -139,7 +139,7 @@ public class BasicEmployeeService implements EmployeeService {
         .orElseThrow(() -> new RestException(ErrorCode.EMPLOYEE_NOT_FOUND));
 
     if (employee.getProfileImage() != null) {
-      binaryContentService.delete(employee.getProfileImage());
+      binaryContentService.delete(employee.getProfileImage().getId());
     }
 
     employeeRepository.delete(employee);
