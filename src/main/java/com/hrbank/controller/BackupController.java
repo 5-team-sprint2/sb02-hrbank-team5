@@ -32,9 +32,9 @@ public class BackupController {
       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startedAtTo,
       @RequestParam(required = false) Long idAfter,
       @RequestParam(required = false) String cursor,
-      @RequestParam(required = false, defaultValue = "10") Integer size,
-      @RequestParam(required = false, defaultValue = "startedAt") String sortField,
-      @RequestParam(required = false, defaultValue = "DESC") String sortDirection
+      @RequestParam(defaultValue = "10") Integer size,
+      @RequestParam(defaultValue = "startedAt") String sortField,
+      @RequestParam(defaultValue = "DESC") String sortDirection
   ){
     CursorPageResponseBackupDto cursorPageResponseBackupDto = backupService.searchBackups(worker, status, startedAtFrom,startedAtTo,idAfter,cursor,size,sortField,sortDirection);
     return ResponseEntity.ok(cursorPageResponseBackupDto);
