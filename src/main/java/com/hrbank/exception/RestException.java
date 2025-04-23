@@ -1,7 +1,6 @@
 package com.hrbank.exception;
 
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 public class RestException extends RuntimeException {
