@@ -120,6 +120,12 @@ public class BasicBackupService implements BackupService {
   @Override
   @Transactional
   public BackupDto runBackup(String requesterIp) {
+
+    // 실행중인 백업 유무 확인
+    if (backupRepository.existsByStatus(BackupStatus.IN_PROGRESS)) {
+      throw new RestException(ErrorCode.BACKUP_ALREADY_IN_PROGRESS);
+    }
+
     if (!isBackupRequired()) {
       // 백업 필요 없으면 SKIPPED 처리
       Backup skipped = Backup.builder()
