@@ -72,7 +72,6 @@ public class BasicBackupService implements BackupService {
     filtered.sort(comparator);
 
     // 커서 디코딩 및 시작 인덱스 계산
-    int finalSize = (size == null || size <= 0) ? 10 : size;
     int startIndex = 0;
     Long cursorId = null;
 
@@ -88,7 +87,7 @@ public class BasicBackupService implements BackupService {
     }
 
     // 페이지 처리
-    int endIndex = Math.min(startIndex + finalSize, filtered.size());
+    int endIndex = Math.min(startIndex + size, filtered.size());
     List<BackupDto> page = filtered.subList(startIndex, endIndex).stream()
         .map(backupMapper::toDto)
         .toList();
@@ -101,15 +100,25 @@ public class BasicBackupService implements BackupService {
         page,
         nextCursor,
         nextIdAfter,
-        finalSize,
+        size,
         filtered.size(),
         hasNext
     );
   }
 
+  @Override
+  public BackupDto findLatestBackupByStatus(BackupStatus status) {
+    return backupRepository.findTopByStatusOrderByEndedAtDesc(status)
+        .map(backupMapper::toDto)
+        .orElseThrow(() ->
+            new IllegalArgumentException("요청한 상태에 해당하는 백업이 존재하지 않습니다.")
+        );
+  }
+
 
   @Override
-  public void runBackup(String requesterIp) {
+  @Transactional
+  public BackupDto runBackup(String requesterIp) {
     if (!isBackupRequired()) {
       // 백업 필요 없으면 SKIPPED 처리
       Backup skipped = Backup.builder()
@@ -119,7 +128,7 @@ public class BasicBackupService implements BackupService {
           .endedAt(Instant.now())
           .build();
       backupRepository.save(skipped);
-      return;
+      return backupMapper.toDto(skipped);
     }
 
     // 백업 이력 생성
@@ -140,10 +149,11 @@ public class BasicBackupService implements BackupService {
       // 실패 처리
       markBackupFailed(inProgress.id(), logFileId);
     }
+
+    return inProgress;
   }
 
-  @Override
-  public boolean isBackupRequired() {
+  private boolean isBackupRequired() {
     Optional<Backup> lastCompletedBackup = backupRepository.findTopByStatusOrderByEndedAtDesc(
         BackupStatus.COMPLETED);
     if(lastCompletedBackup.isEmpty()){
@@ -157,8 +167,7 @@ public class BasicBackupService implements BackupService {
     return employeeChangeLogRepository.existsByUpdatedAtAfter(lastBackupTime);
   }
 
-  @Override
-  public BackupDto createInProgressBackup(String requesterIp) {
+  private BackupDto createInProgressBackup(String requesterIp) {
     Backup backup = Backup.builder()
         .worker(requesterIp)
         .status(BackupStatus.IN_PROGRESS)
@@ -169,8 +178,7 @@ public class BasicBackupService implements BackupService {
     return backupMapper.toDto(saved);
   }
 
-  @Override
-  public void markBackupCompleted(Long backupId, Long fileId) {
+  private void markBackupCompleted(Long backupId, Long fileId) {
     Backup backup = backupRepository.findById(backupId)
         .orElseThrow(() -> new EntityNotFoundException("백업을 찾을 수 없습니다."));
 
@@ -180,8 +188,7 @@ public class BasicBackupService implements BackupService {
     backup.completeBackup(file);
   }
 
-  @Override
-  public void markBackupFailed(Long backupId, Long logFileId) {
+  private void markBackupFailed(Long backupId, Long logFileId) {
     Backup backup = backupRepository.findById(backupId)
         .orElseThrow(() -> new EntityNotFoundException("백업을 찾을 수 없습니다."));
 

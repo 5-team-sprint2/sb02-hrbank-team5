@@ -2,16 +2,14 @@ package com.hrbank.dto.employee;
 
 import com.hrbank.enums.EmployeeStatus;
 import java.time.LocalDate;
-import java.util.UUID;
 
-public record EmployeeDto(
-    Long id,
+public record EmployeeUpdateRequest(
     String name,
     String email,
-    String employeeNumber,
+    Long departmentId,
     String position,
     LocalDate hireDate,
     EmployeeStatus status,
-    String departmentName,
-    Long departmentId
+    String memo,
+    Long profileImageId
 ) {}
