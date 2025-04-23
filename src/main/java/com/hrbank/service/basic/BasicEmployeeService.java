@@ -13,6 +13,7 @@ import com.hrbank.repository.DepartmentRepository;
 import com.hrbank.repository.EmployeeRepository;
 import com.hrbank.service.EmployeeChangeLogService;
 import com.hrbank.service.EmployeeService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,10 +34,14 @@ public class BasicEmployeeService implements EmployeeService {
   }
 
   @Override
+  @Transactional
   public EmployeeDto update(Long id, EmployeeUpdateRequest request, String ip) {
     Employee employee = employeeRepository.findById(id)
         .orElseThrow(() -> new RestException(ErrorCode.EMPLOYEE_NOT_FOUND));
 
+    if (employeeRepository.findByEmail(request.email()).isPresent()) {
+      throw new RestException(ErrorCode.EMAIL_ALREADY_EXISTS);
+    }
     Department department = departmentRepository.findById(request.departmentId())
         .orElseThrow(() -> new RestException(ErrorCode.DEPARTMENT_NOT_FOUND));
 
@@ -44,6 +49,10 @@ public class BasicEmployeeService implements EmployeeService {
     if (request.profileImageId() != null) {
       profileImage = binaryContentRepository.findById(request.profileImageId())
           .orElseThrow(() -> new RestException(ErrorCode.PROFILE_IMAGE_NOT_FOUND));
+
+      if (employee.getProfileImage() == null) {
+        binaryContentRepository.delete(employee.getProfileImage());
+      }
     }
     // RestException 나중에 머지 되면 바꿀 예정
 
