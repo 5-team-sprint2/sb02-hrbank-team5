@@ -1,7 +1,6 @@
 package com.hrbank.storage;
 
 import com.hrbank.dto.binarycontent.BinaryContentDto;
-import com.hrbank.repository.EmployeeRepository;
 import jakarta.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
@@ -28,8 +27,7 @@ public class BinaryContentStorage {
   private final Path root;
   private static final Logger log = LoggerFactory.getLogger(BinaryContentStorage.class);
 
-  public BinaryContentStorage(@Value(".hrbank/storage") Path root,
-      EmployeeRepository employeeRepository){
+  public BinaryContentStorage(@Value(".hrbank/storage") Path root){
     this.root = root;
   }
 

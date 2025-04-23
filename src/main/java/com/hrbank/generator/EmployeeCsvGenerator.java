@@ -40,7 +40,7 @@ public class EmployeeCsvGenerator {
         var writer = Files.newBufferedWriter(tempFile.toPath(), StandardCharsets.UTF_8);
         CSVPrinter printer = new
             CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(
-            EmployeeCsvHeader.class));
+            EmployeeCsvHeader.class))
     ) {
       int page = 0;
       Page<Employee> chunk;
