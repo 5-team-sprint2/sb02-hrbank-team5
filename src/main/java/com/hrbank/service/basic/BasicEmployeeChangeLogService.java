@@ -10,11 +10,12 @@ import com.hrbank.entity.Employee;
 import com.hrbank.entity.EmployeeChangeLog;
 import com.hrbank.entity.EmployeeChangeLogDetail;
 import com.hrbank.enums.EmployeeChangeLogType;
+import com.hrbank.exception.ErrorCode;
+import com.hrbank.exception.RestException;
 import com.hrbank.mapper.EmployeeChangeLogMapper;
 import com.hrbank.repository.EmployeeChangeLogRepository;
 import com.hrbank.repository.specification.EmployeeChangeLogSpecification;
 import com.hrbank.service.EmployeeChangeLogService;
-import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -43,7 +44,9 @@ public class BasicEmployeeChangeLogService implements EmployeeChangeLogService {
     String employeeNumber;
 
     // 1. 변경 유형 판별
-    if (before == null && after != null) {
+    if (before == null && after == null) {
+      throw new RestException(ErrorCode.INVALID_CHANGE_LOG_DATA);
+    } else if (before == null && after != null) {
       type = EmployeeChangeLogType.CREATED;
       employeeNumber = after.getEmployeeNumber();
     } else if (before != null && after == null) {
@@ -116,7 +119,7 @@ public class BasicEmployeeChangeLogService implements EmployeeChangeLogService {
       try {
         resolvedIdAfter = Long.parseLong(cursor);
       } catch (NumberFormatException e) {
-        throw new IllegalArgumentException("잘못된 커서 값입니다: " + cursor);
+        throw new RestException(ErrorCode.INVALID_CURSOR);
       }
     }
 
@@ -163,8 +166,7 @@ public class BasicEmployeeChangeLogService implements EmployeeChangeLogService {
   @Override
   public List<DiffDto> getChangeLogDetails(Long changeLogId) {
     EmployeeChangeLog log = changeLogRepository.findById(changeLogId)
-        .orElseThrow(() -> new
-            EntityNotFoundException("해당하는 변경 이력이 없습니다. id=" + changeLogId));
+        .orElseThrow(() -> new RestException(ErrorCode.CHANGE_LOG_NOT_FOUND));
 
     return changeLogMapper.toDiffDtoList(log.getDetails());
   }
