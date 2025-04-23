@@ -1,11 +1,11 @@
 package com.hrbank.controller;
 
+import com.hrbank.controller.api.BackupApi;
 import com.hrbank.dto.backup.BackupDto;
 import com.hrbank.dto.backup.CursorPageResponseBackupDto;
 import com.hrbank.enums.BackupStatus;
 import com.hrbank.service.BackupService;
 import jakarta.servlet.http.HttpServletRequest;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,9 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/backups")
-public class BackupController {
+public class BackupController implements BackupApi {
   private final BackupService backupService;
 
+  @Override
   @GetMapping
   public ResponseEntity<CursorPageResponseBackupDto> getAllBackups(
       @RequestParam(required = false) String worker,
@@ -40,14 +41,16 @@ public class BackupController {
     return ResponseEntity.ok(cursorPageResponseBackupDto);
   }
 
+  @Override
   @PostMapping
   public ResponseEntity<BackupDto> createBackup(HttpServletRequest servletRequest){
       BackupDto backupDto = backupService.runBackup(servletRequest.getRemoteAddr());
       return ResponseEntity.ok(backupDto);
   }
 
+  @Override
   @GetMapping(value = "/latest")
-  public ResponseEntity<BackupDto> getLatestBackup(@RequestParam(required = false, defaultValue = "COMPLETED") BackupStatus status){
+  public ResponseEntity<BackupDto> getLatestBackup(@RequestParam( defaultValue = "COMPLETED") BackupStatus status){
     BackupDto backupDto = backupService.findLatestBackupByStatus(status);
     return ResponseEntity.ok(backupDto);
   }
