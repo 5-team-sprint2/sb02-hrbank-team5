@@ -179,6 +179,10 @@ public class BasicEmployeeChangeLogService implements EmployeeChangeLogService {
     LocalDateTime start = (fromDate != null) ? fromDate : now.minusDays(7);
     LocalDateTime end = (toDate != null) ? toDate : now;
 
+    if (fromDate.isAfter(toDate)) {
+      throw new RestException(ErrorCode.INVALID_DATE_RANGE);
+    }
+
     Specification<EmployeeChangeLog> spec = Specification
         .where(EmployeeChangeLogSpecification.atBetween(start, end));
 
