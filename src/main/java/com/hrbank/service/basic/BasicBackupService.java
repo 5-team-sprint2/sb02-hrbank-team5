@@ -99,6 +99,15 @@ public class BasicBackupService implements BackupService {
     );
   }
 
+  @Override
+  public BackupDto findLatestBackupByStatus(BackupStatus status) {
+    return backupRepository.findTopByStatusOrderByEndedAtDesc(status)
+        .map(backupMapper::toDto)
+        .orElseThrow(() ->
+            new IllegalArgumentException("요청한 상태에 해당하는 백업이 존재하지 않습니다.")
+        );
+  }
+
 
   @Override
   public BackupDto runBackup(String requesterIp) {
