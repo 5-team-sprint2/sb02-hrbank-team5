@@ -89,7 +89,7 @@ public class BinaryContentStorage {
         throw new RestException(ErrorCode.FILE_NOT_FOUND);
       }
     }catch (IOException e){
-      log.error("파일 삭제 중 오류 발생 (id={})", id, e);
+      log.error("파일 삭제 중 오류 발생 (filePath={})", filePath, e);
       throw new RestException(ErrorCode.FILE_DELETE_ERROR);
     }
   }
