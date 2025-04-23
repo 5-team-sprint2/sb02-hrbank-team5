@@ -109,6 +109,7 @@ public class BasicBackupService implements BackupService {
 
 
   @Override
+  @Transactional
   public BackupDto runBackup(String requesterIp) {
     if (!isBackupRequired()) {
       // 백업 필요 없으면 SKIPPED 처리
@@ -144,8 +145,7 @@ public class BasicBackupService implements BackupService {
     return inProgress;
   }
 
-  @Override
-  public boolean isBackupRequired() {
+  private boolean isBackupRequired() {
     Optional<Backup> lastCompletedBackup = backupRepository.findTopByStatusOrderByEndedAtDesc(
         BackupStatus.COMPLETED);
     if(lastCompletedBackup.isEmpty()){
@@ -159,8 +159,7 @@ public class BasicBackupService implements BackupService {
     return employeeChangeLogRepository.existsByUpdatedAtAfter(lastBackupTime);
   }
 
-  @Override
-  public BackupDto createInProgressBackup(String requesterIp) {
+  private BackupDto createInProgressBackup(String requesterIp) {
     Backup backup = Backup.builder()
         .worker(requesterIp)
         .status(BackupStatus.IN_PROGRESS)
@@ -171,8 +170,7 @@ public class BasicBackupService implements BackupService {
     return backupMapper.toDto(saved);
   }
 
-  @Override
-  public void markBackupCompleted(Long backupId, Long fileId) {
+  private void markBackupCompleted(Long backupId, Long fileId) {
     Backup backup = backupRepository.findById(backupId)
         .orElseThrow(() -> new EntityNotFoundException("백업을 찾을 수 없습니다."));
 
@@ -182,8 +180,7 @@ public class BasicBackupService implements BackupService {
     backup.completeBackup(file);
   }
 
-  @Override
-  public void markBackupFailed(Long backupId, Long logFileId) {
+  private void markBackupFailed(Long backupId, Long logFileId) {
     Backup backup = backupRepository.findById(backupId)
         .orElseThrow(() -> new EntityNotFoundException("백업을 찾을 수 없습니다."));
 
