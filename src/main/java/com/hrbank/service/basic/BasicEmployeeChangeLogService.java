@@ -2,6 +2,7 @@ package com.hrbank.service.basic;
 
 import com.hrbank.dto.employeeChangeLog.ChangeLogDto;
 import com.hrbank.dto.employeeChangeLog.CursorPageResponseChangeLogDto;
+import com.hrbank.dto.employeeChangeLog.DiffDto;
 import com.hrbank.dto.employeeChangeLog.EmployeeChangeLogSearchRequest;
 import com.hrbank.entity.BinaryContent;
 import com.hrbank.entity.Department;
@@ -13,11 +14,11 @@ import com.hrbank.mapper.EmployeeChangeLogMapper;
 import com.hrbank.repository.EmployeeChangeLogRepository;
 import com.hrbank.repository.specification.EmployeeChangeLogSpecification;
 import com.hrbank.service.EmployeeChangeLogService;
+import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -98,7 +99,7 @@ public class BasicEmployeeChangeLogService implements EmployeeChangeLogService {
   }
 
   @Override
-  public Optional<EmployeeChangeLog> findWithDetailsById(UUID id) {
+  public Optional<EmployeeChangeLog> findWithDetailsById(Long id) {
     return changeLogRepository.findById(id); // 추후 fetch join 필요하면 custom query로 변경
   }
 
@@ -157,6 +158,15 @@ public class BasicEmployeeChangeLogService implements EmployeeChangeLogService {
         page.getTotalElements(),             // 전체 개수
         page.hasNext()                       // hasNext
     );
+  }
+
+  @Override
+  public List<DiffDto> getChangeLogDetails(Long changeLogId) {
+    EmployeeChangeLog log = changeLogRepository.findById(changeLogId)
+        .orElseThrow(() -> new
+            EntityNotFoundException("해당하는 변경 이력이 없습니다. id=" + changeLogId));
+
+    return changeLogMapper.toDiffDtoList(log.getDetails());
   }
 
 
