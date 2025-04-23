@@ -3,13 +3,12 @@ package com.hrbank.service.basic;
 import com.hrbank.dto.binarycontent.BinaryContentCreateRequest;
 import com.hrbank.dto.binarycontent.BinaryContentDto;
 import com.hrbank.entity.BinaryContent;
-import com.hrbank.mapper.BinaryContentMapper;
 import com.hrbank.exception.ErrorCode;
 import com.hrbank.exception.RestException;
+import com.hrbank.mapper.BinaryContentMapper;
 import com.hrbank.repository.BinaryContentRepository;
 import com.hrbank.service.BinaryContentService;
 import com.hrbank.storage.BinaryContentStorage;
-import io.swagger.v3.oas.annotations.servers.Server;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Server
 @RequiredArgsConstructor
 public class BasicBinaryContentService implements BinaryContentService {
   private final BinaryContentRepository binaryContentRepository;
