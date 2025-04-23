@@ -124,4 +124,20 @@ public class BasicEmployeeService implements EmployeeService {
   private String generateEmployeeNumber() {
     return "E" + System.currentTimeMillis();
   }
+
+
+  @Override
+  @Transactional
+  public EmployeeDto delete(Long id) {
+    Employee employee = employeeRepository.findById(id)
+        .orElseThrow(() -> new RestException(ErrorCode.EMPLOYEE_NOT_FOUND));
+
+    if (employee.getProfileImage() != null) {
+      binaryContentService.delete(employee.getProfileImage());
+    }
+
+    employeeRepository.delete(employee);
+
+    return employeeMapper.toDto(employee);
+  }
 }

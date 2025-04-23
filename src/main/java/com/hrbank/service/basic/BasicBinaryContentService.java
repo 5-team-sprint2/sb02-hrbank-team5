@@ -49,4 +49,9 @@ public class BasicBinaryContentService implements BinaryContentService {
     return binaryContentMapper.toDto(binaryContent);
   }
 
+  @Override
+  @Transactional
+  public void delete(BinaryContent binaryContent) {
+    binaryContentRepository.delete(binaryContent);
+  }
 }
