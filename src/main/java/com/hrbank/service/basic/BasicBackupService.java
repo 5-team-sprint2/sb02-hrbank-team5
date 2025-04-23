@@ -7,6 +7,8 @@ import com.hrbank.dto.backup.CursorPageResponseBackupDto;
 import com.hrbank.entity.Backup;
 import com.hrbank.entity.BinaryContent;
 import com.hrbank.enums.BackupStatus;
+import com.hrbank.exception.ErrorCode;
+import com.hrbank.exception.RestException;
 import com.hrbank.generator.EmployeeCsvGenerator;
 import com.hrbank.mapper.BackupMapper;
 import com.hrbank.repository.BackupRepository;
@@ -21,7 +23,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Comparator;
@@ -112,7 +113,7 @@ public class BasicBackupService implements BackupService {
     return backupRepository.findTopByStatusOrderByEndedAtDesc(status)
         .map(backupMapper::toDto)
         .orElseThrow(() ->
-            new IllegalArgumentException("요청한 상태에 해당하는 백업이 존재하지 않습니다.")
+            new RestException(ErrorCode.BACKUP_LATEST_NOT_FOUND)
         );
   }
 
@@ -170,7 +171,6 @@ public class BasicBackupService implements BackupService {
     LocalDateTime lastBackupTime = lastCompletedBackup.get().getEndedAt();
 
     // 특정 시간 이후 직원 업데이트 내역 확인
-    // 추후 구현 필요
     return employeeChangeLogRepository.existsByAtAfter(lastBackupTime);
   }
 
@@ -187,20 +187,20 @@ public class BasicBackupService implements BackupService {
 
   private void markBackupCompleted(Long backupId, Long fileId) {
     Backup backup = backupRepository.findById(backupId)
-        .orElseThrow(() -> new EntityNotFoundException("백업을 찾을 수 없습니다."));
+        .orElseThrow(() -> new RestException(ErrorCode.BACKUP_NOT_FOUND));
 
     BinaryContent file = binaryContentRepository.findById(fileId)
-        .orElseThrow(() -> new EntityNotFoundException("파일을 찾을 수 없습니다."));
+        .orElseThrow(() -> new RestException(ErrorCode.BACKUP_CSV_NOT_FOUND));
 
     backup.completeBackup(file);
   }
 
   private void markBackupFailed(Long backupId, Long logFileId) {
     Backup backup = backupRepository.findById(backupId)
-        .orElseThrow(() -> new EntityNotFoundException("백업을 찾을 수 없습니다."));
+        .orElseThrow(() -> new RestException(ErrorCode.BACKUP_NOT_FOUND));
 
     BinaryContent logFile = binaryContentRepository.findById(logFileId)
-        .orElseThrow(() -> new EntityNotFoundException("로그 파일을 찾을 수 없습니다."));
+        .orElseThrow(() -> new RestException(ErrorCode.BACKUP_ERROR_LOG_NOT_FOUND));
 
     backup.failBackup(logFile);
   }
