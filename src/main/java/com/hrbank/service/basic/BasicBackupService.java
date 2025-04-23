@@ -101,7 +101,7 @@ public class BasicBackupService implements BackupService {
 
 
   @Override
-  public void runBackup(String requesterIp) {
+  public BackupDto runBackup(String requesterIp) {
     if (!isBackupRequired()) {
       // 백업 필요 없으면 SKIPPED 처리
       Backup skipped = Backup.builder()
@@ -111,7 +111,7 @@ public class BasicBackupService implements BackupService {
           .endedAt(Instant.now())
           .build();
       backupRepository.save(skipped);
-      return;
+      return backupMapper.toDto(skipped);
     }
 
     // 백업 이력 생성
@@ -132,6 +132,8 @@ public class BasicBackupService implements BackupService {
       // 실패 처리
       markBackupFailed(inProgress.id(), logFileId);
     }
+
+    return inProgress;
   }
 
   @Override

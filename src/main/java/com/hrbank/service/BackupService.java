@@ -11,7 +11,7 @@ public interface BackupService {
   CursorPageResponseBackupDto searchBackups(String worker, BackupStatus status, Instant from, Instant to, Long id, String cursor, Integer size, String sortField, String sortDirection);
 
   // 백업 수행
-  void runBackup(String requesterIp);
+  BackupDto runBackup(String requesterIp);
 
   // 백업 필요 여부 판단: 가장 최근 완료 이후 변경 있으면 true
   boolean isBackupRequired();
