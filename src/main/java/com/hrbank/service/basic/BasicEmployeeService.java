@@ -21,8 +21,15 @@ import com.hrbank.service.BinaryContentService;
 import com.hrbank.service.EmployeeChangeLogService;
 import com.hrbank.service.EmployeeService;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +45,24 @@ public class BasicEmployeeService implements EmployeeService {
 
   @Override
   public CursorPageResponseEmployeeDto searchEmployees(EmployeeSearchCondition condition) {
-    return employeeRepository.findAllWithFilter(condition);
+    // 페이지네이션 처리
+    Pageable pageable = PageRequest.of(condition.getPage(), condition.getSize(), Sort.by(condition.getSortField()));
+
+    // 직원 목록 조회
+    Page<Employee> employees = employeeRepository.findAllWithFilter(condition, pageable);
+
+    List<EmployeeDto> employeeDtos = employeeMapper.toDtoList(employees.getContent());
+
+    // 커서와 페이지네이션 정보 계산
+    Long nextIdAfter = employees.getContent().isEmpty() ? null : employees.getContent().get(employees.getContent().size() - 1).getId();
+    String nextCursor = (nextIdAfter != null) ? nextIdAfter.toString() : null;  // nextCursor를 String으로 설정
+
+    int size = employees.getSize();
+    Long totalElements = employees.getTotalElements();
+    boolean hasNext = employees.hasNext();
+
+    // 응답 DTO 반환
+    return new CursorPageResponseEmployeeDto(employeeDtos, nextCursor, nextIdAfter, size, totalElements, hasNext);
   }
 
   // 직원 수정 메서드 (update)
@@ -94,13 +118,14 @@ public class BasicEmployeeService implements EmployeeService {
   // 직원 생성 메서드 (create)
   @Override
   @Transactional
-  public EmployeeDto create(EmployeeCreateRequest request) {
+  public EmployeeDto create(EmployeeCreateRequest request, MultipartFile profileImage) {
     Department department = departmentRepository.findById(request.departmentId())
         .orElseThrow(() -> new RestException(ErrorCode.DEPARTMENT_NOT_FOUND));
 
-    BinaryContent profileImage = null;
-    if (request.profileImage() != null) {
-        profileImage = binaryContentService.create(new BinaryContentCreateRequest(request.profileImage()));
+    BinaryContent profileImageEntity = null;
+    if (profileImage != null && !profileImage.isEmpty()) {
+      BinaryContentCreateRequest profileImageCreateRequest = new BinaryContentCreateRequest(profileImage);
+      profileImageEntity = binaryContentService.create(profileImageCreateRequest);
     }
 
     // 사원번호 생성
@@ -117,24 +142,24 @@ public class BasicEmployeeService implements EmployeeService {
         EmployeeStatus.ACTIVE
     );
 
-    if (profileImage != null) {
-        employee.changeProfileImage(profileImage);
+    if (profileImageEntity != null) {
+        employee.changeProfileImage(profileImageEntity);
     }
 
     // 직원 저장
     employeeRepository.save(employee);
+
     return employeeMapper.toDto(employee);
   }
 
   // 사원번호 생성 함수
   private String generateEmployeeNumber() {
-    return "E" + System.currentTimeMillis();
+    return "EMP-" + LocalDate.now().getYear() + "-" + System.currentTimeMillis();
   }
-
 
   @Override
   @Transactional
-  public EmployeeDto delete(Long id) {
+  public void delete(Long id) {
     Employee employee = employeeRepository.findById(id)
         .orElseThrow(() -> new RestException(ErrorCode.EMPLOYEE_NOT_FOUND));
 
@@ -143,8 +168,6 @@ public class BasicEmployeeService implements EmployeeService {
     }
 
     employeeRepository.delete(employee);
-
-    return employeeMapper.toDto(employee);
   }
 
   @Override
