@@ -101,33 +101,45 @@ public class BasicDepartmentService implements DepartmentService {
             String sortDirection) {
 
         int pageSize = (size != null && size > 0) ? size : DEFAULT_PAGE_SIZE;
-        sortField = (sortField != null) ? sortField : "establishedDate";
+
+        // sortField 검증 로직 - 기존 null 체크를 포함하면서 확장
+        if (sortField == null || (!sortField.equals("name") && !sortField.equals("establishedDate"))) {
+            sortField = "establishedDate"; // 기본값으로 설정
+        }
+
         sortDirection = (sortDirection != null) ? sortDirection : "asc";
 
         // Sort 생성
         Sort.Direction direction = Sort.Direction.fromString(sortDirection);
         Sort sort = Sort.by(direction, sortField).and(Sort.by(Sort.Direction.ASC, "id"));
 
-        // 페이지네이션 (LIMIT: pageSize + 1)
+        // 페이지네이션 (커서 기반이지만 한 번에 가져올 수량 제한)
         Pageable pageable = PageRequest.of(0, pageSize + 1, sort);
 
-        // Specification 조립
+        // Specification 조립 - 커서 기반 조건 포함
         Specification<Department> spec = DepartmentSpecifications.buildSearchSpecification(
-                nameOrDescription, idAfter
+                nameOrDescription, idAfter, cursor, sortField, sortDirection
         );
 
         // 쿼리 실행
         List<Department> departments = departmentRepository.findAll(spec, pageable).getContent();
 
-        // 전체 개수 조회
-        long totalElements = departmentRepository.count(spec);
+        // 전체 개수 조회 (커서 조건 제외한 필터 조건만으로 카운트)
+        long totalElements = departmentRepository.count(
+                DepartmentSpecifications.nameOrDescriptionContains(nameOrDescription)
+        );
 
-        return createPageResponse(departments, pageSize, cursor, idAfter, totalElements);
+        return createPageResponse(departments, pageSize, sortField, sortDirection, totalElements);
     }
 
-    // 커서 기반 페이지네이션 응답 생성 헬퍼 메서드
+    // 커서 기반 페이지네이션 응답 생성 헬퍼 메서드 수정
     private CursorPageResponseDepartmentDto createPageResponse(
-            List<Department> departments, int pageSize, String cursor, Long idAfter, Long totalElements) {
+            List<Department> departments,
+            int pageSize,
+            String sortField,
+            String sortDirection,
+            Long totalElements) {
+
         boolean hasNext = departments.size() > pageSize;
 
         if (hasNext) {
@@ -138,10 +150,20 @@ public class BasicDepartmentService implements DepartmentService {
 
         String nextCursor = null;
         Long nextIdAfter = null;
+
         if (hasNext && !departments.isEmpty()) {
             Department lastDepartment = departments.get(departments.size() - 1);
-            nextCursor = String.valueOf(lastDepartment.getId());
             nextIdAfter = lastDepartment.getId();
+
+            // 정렬 필드에 따라 적절한 커서 값 설정
+            if ("name".equals(sortField)) {
+                nextCursor = lastDepartment.getName();
+            } else if ("establishedDate".equals(sortField)) {
+                nextCursor = lastDepartment.getEstablishedDate() != null ?
+                        lastDepartment.getEstablishedDate().toString() : null;
+            } else {
+                nextCursor = String.valueOf(lastDepartment.getId());
+            }
         }
 
         return new CursorPageResponseDepartmentDto(
