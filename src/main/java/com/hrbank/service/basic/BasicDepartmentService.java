@@ -19,7 +19,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +34,7 @@ public class BasicDepartmentService implements DepartmentService {
     @Override
     @Transactional
     public DepartmentDto createDepartment(DepartmentCreateRequest request) {
+
         // 이름 중복 검사
         if (departmentRepository.findByName(request.name()).isPresent()) {
             throw new RestException(ErrorCode.DEPARTMENT_NAME_DUPLICATED);
@@ -44,7 +48,7 @@ public class BasicDepartmentService implements DepartmentService {
         );
         Department savedDepartment = departmentRepository.save(department);
 
-        return departmentMapper.toDto(savedDepartment);
+        return departmentMapper.toDto(savedDepartment, 0);
     }
 
     @Override
@@ -53,7 +57,10 @@ public class BasicDepartmentService implements DepartmentService {
         Department department = departmentRepository.findById(id)
                 .orElseThrow(() -> new RestException(ErrorCode.DEPARTMENT_NOT_FOUND));
 
-        return departmentMapper.toDto(department);
+        // 직원 수 조회 - N+1 문제 해결
+        int employeeCount = departmentRepository.countEmployeesByDepartmentId(id);
+
+        return departmentMapper.toDto(department, employeeCount);
     }
 
     @Override
@@ -73,7 +80,10 @@ public class BasicDepartmentService implements DepartmentService {
         department.update(request.name(), request.description(), request.establishedDate());
         Department updatedDepartment = departmentRepository.save(department);
 
-        return departmentMapper.toDto(updatedDepartment);
+        // 직원 수 조회 - N+1 문제 해결
+        int employeeCount = departmentRepository.countEmployeesByDepartmentId(id);
+
+        return departmentMapper.toDto(updatedDepartment, employeeCount);
     }
 
     @Override
@@ -102,12 +112,15 @@ public class BasicDepartmentService implements DepartmentService {
 
         int pageSize = (size != null && size > 0) ? size : DEFAULT_PAGE_SIZE;
 
-        // sortField 검증 로직 - 기존 null 체크를 포함하면서 확장
+        // sortField 검증 로직 - name 또는 establishedDate, 기본값: establishedDate
         if (sortField == null || (!sortField.equals("name") && !sortField.equals("establishedDate"))) {
             sortField = "establishedDate"; // 기본값으로 설정
         }
 
-        sortDirection = (sortDirection != null) ? sortDirection : "asc";
+        // sortDirection 검증 - asc 또는 desc, 기본값: asc
+        if (sortDirection == null || (!sortDirection.equals("asc") && !sortDirection.equals("desc"))) {
+            sortDirection = "asc";  // 기본값은 asc
+        }
 
         // Sort 생성
         Sort.Direction direction = Sort.Direction.fromString(sortDirection);
@@ -129,12 +142,28 @@ public class BasicDepartmentService implements DepartmentService {
                 DepartmentSpecifications.nameOrDescriptionContains(nameOrDescription)
         );
 
-        return createPageResponse(departments, pageSize, sortField, sortDirection, totalElements);
+// N+1 문제 해결: 부서 ID 목록 추출
+        List<Long> departmentIds = departments.stream()
+                .map(Department::getId)
+                .collect(Collectors.toList());
+
+        // 모든 부서의 직원 수를 한 번의 쿼리로 조회
+        Map<Long, Integer> employeeCountMap = new HashMap<>();
+        if (!departmentIds.isEmpty()) {
+            List<Object[]> counts = departmentRepository.countEmployeesByDepartmentIds(departmentIds);
+            for (Object[] count : counts) {
+                Long departmentId = (Long) count[0];
+                Integer employeeCount = ((Number) count[1]).intValue();
+                employeeCountMap.put(departmentId, employeeCount);
+            }
+        }
+        return createPageResponse(departments, employeeCountMap, pageSize, sortField, sortDirection, totalElements);
     }
 
     // 커서 기반 페이지네이션 응답 생성 헬퍼 메서드 수정
     private CursorPageResponseDepartmentDto createPageResponse(
             List<Department> departments,
+            Map<Long, Integer> employeeCountMap,
             int pageSize,
             String sortField,
             String sortDirection,
@@ -146,7 +175,13 @@ public class BasicDepartmentService implements DepartmentService {
             departments = departments.subList(0, pageSize);
         }
 
-        List<DepartmentDto> departmentDtos = departmentMapper.toDtoList(departments);
+        // N+1 문제 해결: 각 부서의 직원 수를 미리 조회한 Map에서 가져옴
+        List<DepartmentDto> departmentDtos = departments.stream()
+                .map(dept -> {
+                    int employeeCount = employeeCountMap.getOrDefault(dept.getId(), 0);
+                    return departmentMapper.toDto(dept, employeeCount);
+                })
+                .collect(Collectors.toList());
 
         String nextCursor = null;
         Long nextIdAfter = null;
