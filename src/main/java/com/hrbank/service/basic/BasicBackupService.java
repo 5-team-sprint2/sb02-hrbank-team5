@@ -17,7 +17,6 @@ import com.hrbank.repository.EmployeeChangeLogRepository;
 import com.hrbank.repository.EmployeeRepository;
 import com.hrbank.service.BackupService;
 import com.hrbank.storage.BinaryContentStorage;
-import jakarta.persistence.EntityNotFoundException;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -119,7 +118,6 @@ public class BasicBackupService implements BackupService {
 
 
   @Override
-  @Transactional
   public BackupDto runBackup(String requesterIp) {
 
     // 실행중인 백업 유무 확인
