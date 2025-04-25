@@ -29,7 +29,7 @@ public class EmployeeChangeLog {
 
   // 유형
   @Enumerated(EnumType.STRING)
-  @Column(nullable = false)
+  @Column(columnDefinition = "employee_change_log_type", nullable = false)
   private EmployeeChangeLogType type;
 
   // 사번
@@ -41,10 +41,11 @@ public class EmployeeChangeLog {
   private String memo;
 
   // IP 주소
-  @Column(nullable = false)
+  @Column(name="ip_address", nullable = false)
   private String ipAddress;
 
   // 시간
+  @Column(nullable = false)
   private LocalDateTime at;
 
   // change_log_diffs, 변경 상세 정보 저장
