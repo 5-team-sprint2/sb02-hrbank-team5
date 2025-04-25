@@ -2,6 +2,7 @@ package com.hrbank.repository;
 
 import com.hrbank.dto.employee.EmployeeSearchCondition;
 import com.hrbank.entity.Employee;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -24,4 +25,14 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>, Emplo
   List<Employee> findNextChunk(@Param("lastId") Long lastId, Pageable pageable);
 
   Page<Employee> findAllWithFilter(EmployeeSearchCondition condition, Pageable pageable);
+
+  @Query("SELECT COUNT(e) FROM Employee e " +
+      "WHERE (:status IS NULL OR e.status = :status) " +
+      "AND (:fromDate IS NULL OR e.hireDate >= :fromDate) " +
+      "AND (:toDate IS NULL OR e.hireDate <= :toDate)")
+  long countByStatusAndHireDate(
+      @Param("status") String status,
+      @Param("fromDate") LocalDate fromDate,
+      @Param("toDate") LocalDate toDate
+  );
 }

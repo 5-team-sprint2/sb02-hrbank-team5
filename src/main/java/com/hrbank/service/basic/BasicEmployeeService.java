@@ -176,6 +176,14 @@ public class BasicEmployeeService implements EmployeeService {
     return employeeMapper.toDto(employee);
   }
 
+  @Override
+  public long getEmployeeCount(String status, LocalDate fromDate, LocalDate toDate) {
+    if (toDate == null) {
+      toDate = LocalDate.now();
+    }
+    return employeeRepository.getEmployeeCount(status, fromDate, toDate);
+  }
+
   // 사원번호 생성 함수
   private String generateEmployeeNumber() {
     return "EMP-" + LocalDate.now().getYear() + "-" + System.currentTimeMillis();

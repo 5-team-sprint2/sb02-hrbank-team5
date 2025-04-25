@@ -4,13 +4,13 @@ import com.hrbank.dto.employee.EmployeeSearchCondition;
 import com.hrbank.entity.Employee;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import java.time.LocalDate;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
@@ -116,6 +116,35 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
     }
 
     // 총 직원 수 반환
+    return query.getSingleResult();
+  }
+
+  // 직원 수 조회 API(대시보드)
+  @Override
+  public long getEmployeeCount(String status, LocalDate fromDate, LocalDate toDate) {
+    String jpql = "SELECT COUNT(e) FROM Employee e WHERE 1=1";
+    if (status != null) {
+      jpql += " AND e.status = :status";
+    }
+    if (fromDate != null) {
+      jpql += " AND e.hireDate >= :fromDate";
+    }
+    if (toDate != null) {
+      jpql += " AND e.hireDate <= :toDate";
+    }
+
+    TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+
+    if (status != null) {
+      query.setParameter("status", com.hrbank.enums.EmployeeStatus.valueOf(status)); //String을 Enum으로
+    }
+    if (fromDate != null) {
+      query.setParameter("fromDate", fromDate);
+    }
+    if (toDate != null) {
+      query.setParameter("toDate", toDate);
+    }
+
     return query.getSingleResult();
   }
 }

@@ -5,6 +5,7 @@ import com.hrbank.dto.employee.EmployeeCreateRequest;
 import com.hrbank.dto.employee.EmployeeDto;
 import com.hrbank.dto.employee.EmployeeSearchCondition;
 import com.hrbank.dto.employee.EmployeeUpdateRequest;
+import java.time.LocalDate;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface EmployeeService {
@@ -17,4 +18,6 @@ public interface EmployeeService {
   void delete(Long id, String ip);
 
   EmployeeDto findById(Long id);
+
+  long getEmployeeCount(String status, LocalDate fromDate, LocalDate toDate);
 }
