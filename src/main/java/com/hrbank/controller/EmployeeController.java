@@ -1,10 +1,6 @@
 package com.hrbank.controller;
 
-import com.hrbank.dto.employee.CursorPageResponseEmployeeDto;
-import com.hrbank.dto.employee.EmployeeCreateRequest;
-import com.hrbank.dto.employee.EmployeeDto;
-import com.hrbank.dto.employee.EmployeeSearchCondition;
-import com.hrbank.dto.employee.EmployeeUpdateRequest;
+import com.hrbank.dto.employee.*;
 import com.hrbank.service.EmployeeService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -79,5 +78,13 @@ public class EmployeeController {
       @RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate toDate) {
 
     return employeeService.getEmployeeCount(status, fromDate, toDate);
+
+  @GetMapping("/stats/distribution")
+  @Operation(summary = "직원 분포 조회")
+  public List<EmployeeDistributionDto> getEmployeeDistribution(
+          @RequestParam(defaultValue = "department") String groupBy,
+          @RequestParam(defaultValue = "ACTIVE") String status
+  ) {
+    return employeeService.getEmployeeDistribution(groupBy, status);
   }
 }

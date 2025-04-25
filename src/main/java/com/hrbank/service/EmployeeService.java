@@ -6,7 +6,10 @@ import com.hrbank.dto.employee.EmployeeDto;
 import com.hrbank.dto.employee.EmployeeSearchCondition;
 import com.hrbank.dto.employee.EmployeeUpdateRequest;
 import java.time.LocalDate;
+import com.hrbank.dto.employee.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface EmployeeService {
   CursorPageResponseEmployeeDto searchEmployees(EmployeeSearchCondition condition);
@@ -20,4 +23,6 @@ public interface EmployeeService {
   EmployeeDto findById(Long id);
 
   long getEmployeeCount(String status, LocalDate fromDate, LocalDate toDate);
+  
+  List<EmployeeDistributionDto> getEmployeeDistribution(String groupBy, String status);
 }
