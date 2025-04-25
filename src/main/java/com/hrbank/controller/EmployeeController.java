@@ -6,11 +6,13 @@ import com.hrbank.dto.employee.EmployeeDto;
 import com.hrbank.dto.employee.EmployeeSearchCondition;
 import com.hrbank.dto.employee.EmployeeUpdateRequest;
 import com.hrbank.service.EmployeeService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,17 +71,13 @@ public class EmployeeController {
     return ResponseEntity.ok(employeeDto);
   }
 
+  @Operation(summary = "직원 수 조회")
   @GetMapping("/count")
-  public ResponseEntity<Long> getEmployeeCount(
+  public long getEmployeeCount(
       @RequestParam(required = false) String status,
-      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
+      @RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate fromDate,
+      @RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate toDate) {
 
-    try {
-      long count = employeeService.getEmployeeCount(status, fromDate, toDate);
-      return ResponseEntity.ok(count);
-    } catch (IllegalArgumentException e) {
-      return ResponseEntity.badRequest().build();
-    }
+    return employeeService.getEmployeeCount(status, fromDate, toDate);
   }
 }

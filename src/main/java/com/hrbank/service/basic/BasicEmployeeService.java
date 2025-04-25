@@ -181,7 +181,7 @@ public class BasicEmployeeService implements EmployeeService {
     if (toDate == null) {
       toDate = LocalDate.now();
     }
-    return employeeRepository.getEmployeeCount(status, fromDate, toDate);
+    return employeeRepository.countByStatusAndHireDate(status, fromDate, toDate);
   }
 
   // 사원번호 생성 함수
