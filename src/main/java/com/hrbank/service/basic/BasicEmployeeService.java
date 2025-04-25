@@ -205,7 +205,7 @@ public class BasicEmployeeService implements EmployeeService {
             .map(row -> {
               String key = (String)row[0];
               Long count = (Long)row[1];
-              Double percentage = totalCount > 0 ? (count * 100.0) / totalCount : 0.0;
+              double percentage = totalCount > 0 ? (count * 100.0) / totalCount : 0.0;
               return new EmployeeDistributionDto(key, count, percentage);
             })
             .collect(Collectors.toList());
