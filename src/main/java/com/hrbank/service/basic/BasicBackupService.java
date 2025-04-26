@@ -27,6 +27,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -57,7 +58,7 @@ public class BasicBackupService implements BackupService {
         .filter(backup -> status == null || backup.getStatus() == status)
         .filter(backup -> from == null || backup.getStartedAt().isAfter(from))
         .filter(backup -> to == null || backup.getStartedAt().isBefore(to))
-        .toList();
+        . collect(Collectors.toList());
 
     // 정렬 기준 설정
     Comparator<Backup> comparator = "endedAt".equalsIgnoreCase(sortField)
