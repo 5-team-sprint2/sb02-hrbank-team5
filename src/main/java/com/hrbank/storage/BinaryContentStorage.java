@@ -136,9 +136,16 @@ public class BinaryContentStorage {
 
   private String buildContentDisposition(String fileName) {
     try {
-      String encoded = URLEncoder.encode(fileName, StandardCharsets.UTF_8)
+      String encoded = URLEncoder
+          .encode(fileName, StandardCharsets.UTF_8)
           .replaceAll("\\+", "%20");
-      return "attachment; filename=\"file.png\"; filename*=UTF-8''" + encoded;
+
+      String fallback = fileName.replaceAll("[^A-Za-z0-9._-]", "_");
+
+      return "attachment; filename=\""
+          + fallback
+          + "\"; filename*=UTF-8''"
+          + encoded;
     } catch (Exception e) {
       return "attachment";
     }
