@@ -27,7 +27,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,7 +85,7 @@ public class BasicEmployeeChangeLogService implements EmployeeChangeLogService {
           Optional.ofNullable(after.getProfileImage()).map(BinaryContent::getFileName).orElse(null));
     }
 
-    else if (type == EmployeeChangeLogType.UPDATED && before != null && after != null) {
+    else if (type == EmployeeChangeLogType.UPDATED) {
       addDetailIfChanged(changeLog, "hireDate"
           , before.getHireDate().toString(), after.getHireDate().toString());
       addDetailIfChanged(changeLog, "name", before.getName(), after.getName());
