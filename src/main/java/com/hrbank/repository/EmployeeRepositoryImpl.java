@@ -89,28 +89,30 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
       to = now.withDayOfMonth(now.lengthOfMonth());  // 이번달 마지막날
     }
 
-    // 2. H2용 날짜 포맷 (FORMATDATETIME)
+    // 2. PostgreSQL용 날짜 포맷 (TO_CHAR)
     String dateFormat;
     switch (groupByUnit) {
-      case "year": dateFormat = "FORMATDATETIME(e.hireDate, 'yyyy')"; break;
-      case "month": dateFormat = "FORMATDATETIME(e.hireDate, 'yyyy-MM')"; break;
+      case "year":
+        dateFormat = "TO_CHAR(e.hireDate, 'YYYY')";
+        break;
+      case "month":
+        dateFormat = "TO_CHAR(e.hireDate, 'YYYY-MM')";
+        break;
       case "quarter":
-        dateFormat = "CONCAT(FORMATDATETIME(e.hireDate, 'yyyy'), '-Q', " +
-            "(CASE WHEN EXTRACT(MONTH FROM e.hireDate) BETWEEN 1 AND 3 THEN 1 " +
-            "WHEN EXTRACT(MONTH FROM e.hireDate) BETWEEN 4 AND 6 THEN 2 " +
-            "WHEN EXTRACT(MONTH FROM e.hireDate) BETWEEN 7 AND 9 THEN 3 " +
-            "ELSE 4 END))";
+        dateFormat = "CONCAT(TO_CHAR(e.hireDate, 'YYYY'), '-Q', EXTRACT(QUARTER FROM e.hireDate))";
         break;
       case "week":
-        dateFormat = "CONCAT(FORMATDATETIME(e.hireDate, 'yyyy'), '-W', EXTRACT(WEEK FROM e.hireDate))";
+        dateFormat = "TO_CHAR(e.hireDate, 'IYYY-IW')"; // ISO 주차 (예: 2024-W01)
         break;
-      default: dateFormat = "FORMATDATETIME(e.hireDate, 'yyyy-MM-dd')"; // day
+      default:
+        dateFormat = "TO_CHAR(e.hireDate, 'YYYY-MM-DD')"; // day
     }
+
 
     // 3. JPQL 동적 생성
     String jpql = "SELECT new com.hrbank.dto.employee.EmployeeTrendDto(" +
         dateFormat + ", " +
-        "COUNT(e.id), 0L, 0.0) " +
+        "CAST(COUNT(e.id) AS Long), 0L, 0.0) " +
         "FROM Employee e WHERE e.hireDate IS NOT NULL ";
 
     if (from != null) jpql += "AND e.hireDate >= :from ";
