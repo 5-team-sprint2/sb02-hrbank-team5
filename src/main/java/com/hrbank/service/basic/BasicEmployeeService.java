@@ -150,10 +150,7 @@ public class BasicEmployeeService implements EmployeeService {
         employee.changeProfileImage(profileImageEntity);
     }
 
-    Employee before = new Employee(
-        null, null, null, null, null, null, null
-    );
-    changeLogService.saveChangeLog(before, employee, request.memo(), ip);
+    changeLogService.saveChangeLog(null, employee, request.memo(), ip);
 
     return employeeMapper.toDto(employee);
   }
@@ -181,9 +178,8 @@ public class BasicEmployeeService implements EmployeeService {
   }
 
   @Override
-  public Page<EmployeeTrendDto> findEmployeeTrends(EmployeeSearchCondition condition,
-      Pageable pageable) {
-    return employeeRepository.findEmployeeTrends(condition, pageable);
+  public List<EmployeeTrendDto> findEmployeeTrends(LocalDate from, LocalDate to, String unit) {
+    return employeeRepository.findEmployeeTrends(from, to, unit);
   }
 
   @Override
