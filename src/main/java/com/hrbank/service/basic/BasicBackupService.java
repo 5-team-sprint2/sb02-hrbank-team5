@@ -60,7 +60,7 @@ public class BasicBackupService implements BackupService {
         .filter(backup -> status == null || backup.getStatus() == status)
         .filter(backup -> from == null || backup.getStartedAt().isAfter(from))
         .filter(backup -> to == null || backup.getStartedAt().isBefore(to))
-        . collect(Collectors.toList());
+        .collect(Collectors.toList());
 
     // 정렬 기준 설정
     Comparator<Backup> comparator = "endedAt".equalsIgnoreCase(sortField)
