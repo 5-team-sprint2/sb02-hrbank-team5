@@ -150,8 +150,7 @@ public class BasicEmployeeService implements EmployeeService {
         EmployeeStatus.ACTIVE
     );
 
-    department.addEmployee(employee);
-    employee = employeeRepository.save(employee);
+    employeeRepository.save(employee);
 
     if (profileImageEntity != null) {
         employee.changeProfileImage(profileImageEntity);

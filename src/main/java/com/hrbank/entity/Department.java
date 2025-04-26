@@ -33,12 +33,6 @@ public class Department {
     @JoinColumn(name = "department_id")
     private List<Employee> employees= new ArrayList<>();
 
-    // 직원 추가 메서드 추가 (양방향 동기화)
-    public void addEmployee(Employee employee) {
-        this.employees.add(employee);
-        employee.setDepartment(this);
-    }
-
     public Department(String name, String description, LocalDate establishedDate) {
         this.name = name;
         this.description = description;
