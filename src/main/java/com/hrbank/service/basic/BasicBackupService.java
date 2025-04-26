@@ -112,9 +112,7 @@ public class BasicBackupService implements BackupService {
   public BackupDto findLatestBackupByStatus(BackupStatus status) {
     return backupRepository.findTopByStatusOrderByEndedAtDesc(status)
         .map(backupMapper::toDto)
-        .orElseThrow(() ->
-            new RestException(ErrorCode.BACKUP_LATEST_NOT_FOUND)
-        );
+        .orElse(null);
   }
 
 
