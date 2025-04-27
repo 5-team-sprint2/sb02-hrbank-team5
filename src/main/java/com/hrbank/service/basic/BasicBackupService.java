@@ -39,7 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 @Slf4j
 public class BasicBackupService implements BackupService {
@@ -52,6 +51,8 @@ public class BasicBackupService implements BackupService {
   private final BinaryContentStorage binaryContentStorage;
   private final EmployeeCsvGenerator employeeCsvGenerator;
 
+
+  @Transactional(readOnly = true)
   @Override
   public CursorPageResponseBackupDto searchBackups(
       String worker, BackupStatus status, LocalDateTime from, LocalDateTime to,
@@ -109,6 +110,7 @@ public class BasicBackupService implements BackupService {
     );
   }
 
+  @Transactional(readOnly = true)
   @Override
   public BackupDto findLatestBackupByStatus(BackupStatus status) {
     return backupRepository.findTopByStatusOrderByEndedAtDesc(status)
@@ -117,6 +119,7 @@ public class BasicBackupService implements BackupService {
   }
 
 
+  @Transactional
   @Override
   public BackupDto runBackup(String requesterIp) {
 
@@ -158,6 +161,7 @@ public class BasicBackupService implements BackupService {
 
     return inProgress;
   }
+
 
   private boolean isBackupRequired() {
     // 직원이 없으면 백업할 필요 X
