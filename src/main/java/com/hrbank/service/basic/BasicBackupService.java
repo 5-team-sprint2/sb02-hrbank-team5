@@ -151,7 +151,7 @@ public class BasicBackupService implements BackupService {
 
     } catch (Exception e) {
       // 로그 파일 생성
-      Long logFileId = saveErrorLogFile(inProgress.id(), e);
+      Long logFileId = saveErrorLogFile(inProgress, e);
 
       // 실패 처리
       markBackupFailed(inProgress.id(), logFileId);
@@ -270,13 +270,18 @@ public class BasicBackupService implements BackupService {
     }
   }
 
-  private Long saveErrorLogFile(Long backupId, Exception e) {
+  private Long saveErrorLogFile(BackupDto dto, Exception e) {
     StringWriter sw = new StringWriter();
     e.printStackTrace(new PrintWriter(sw));
     String trace = sw.toString();
 
     BinaryContent binaryContent = new BinaryContent();
-    binaryContent.setFileName("backup_error_" + backupId + ".log");
+    DateTimeFormatter fmt = DateTimeFormatter
+        .ofPattern("yyyyMMdd_HHmmss");
+    String timestamp = fmt.format(dto.startedAt());
+    String backupId = String.valueOf(dto.id());
+
+    binaryContent.setFileName("backup_error_" + backupId + "_" + timestamp + ".log");
     binaryContent.setContentType("text/plain");
     binaryContent = binaryContentRepository.save(binaryContent);
     Long contentId = binaryContent.getId();
