@@ -39,6 +39,7 @@ public class EmployeeChangeLogSpecification {
       if (start == null || end == null) {
         return null;
       }
+
       return cb.between(root.get("at"), start, end);
     };
   }
