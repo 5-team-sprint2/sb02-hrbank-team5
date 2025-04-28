@@ -39,6 +39,7 @@ public class BinaryContentStorage {
       try {
         Files.createDirectories(root);
       } catch (IOException e) {
+        log.info("Failed to create directory at: {}", root, e);
         throw new RestException(ErrorCode.STORAGE_INITIALIZATION_FAILED);
       }
     }
