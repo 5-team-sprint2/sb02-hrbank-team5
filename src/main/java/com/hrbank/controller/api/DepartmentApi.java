@@ -44,7 +44,7 @@ public interface DepartmentApi {
                                     value = "{\n"
                                             + "  \"timestamp\": \"2025-03-06T05:39:06.152068Z\",\n"
                                             + "  \"status\": 500,\n"
-                                            + "  \"message\": \"잘못된 요청입니다.\",\n"
+                                            + "  \"message\": \"서버 오류가 발생했습니다.\",\n"
                                             + "  \"details\": \"예상치 못한 오류가 발생했습니다.\"\n"
                                             + "}"
                             )
