@@ -24,6 +24,9 @@ logging:
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
 
+server:
+  port: ${PORT:8080}  # ✅ 이 줄 추가!
+
 hrbank:
   storage:
     type: local
