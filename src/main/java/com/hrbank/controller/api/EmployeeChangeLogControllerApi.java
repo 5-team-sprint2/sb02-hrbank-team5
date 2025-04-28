@@ -35,6 +35,18 @@ public interface EmployeeChangeLogControllerApi {
                     "details": "/api/change-logs"
                   }
               """
+          ))),
+      @ApiResponse(responseCode = "500", description = "서버 오류",
+          content = @Content(examples = @ExampleObject(
+              value = """
+                  {
+                    "code": "INTERNAL_ERROR",
+                    "status": 500,
+                    "message": "서버 내부 오류가 발생했습니다.",
+                    "timestamp": "2025-04-28T10:00:00.000Z",
+                    "details": "/api/change-logs"
+                  }
+              """
           )))
   })
   ResponseEntity<CursorPageResponseChangeLogDto> getChangeLogs(
@@ -61,6 +73,18 @@ public interface EmployeeChangeLogControllerApi {
                     "code": "CHANGE_LOG_NOT_FOUND",
                     "status": 400,
                     "message": "해당하는 변경 이력이 없습니다.",
+                    "timestamp": "2025-04-28T10:00:00.000Z",
+                    "details": "/api/change-logs/{id}/diffs"
+                  }
+              """
+          ))),
+      @ApiResponse(responseCode = "500", description = "서버 오류",
+          content = @Content(examples = @ExampleObject(
+              value = """
+                  {
+                    "code": "INTERNAL_ERROR",
+                    "status": 500,
+                    "message": "서버 내부 오류가 발생했습니다.",
                     "timestamp": "2025-04-28T10:00:00.000Z",
                     "details": "/api/change-logs/{id}/diffs"
                   }
