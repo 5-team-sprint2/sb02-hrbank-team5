@@ -43,7 +43,7 @@ public interface DepartmentApi {
                             examples = @ExampleObject(
                                     value = "{\n"
                                             + "  \"timestamp\": \"2025-03-06T05:39:06.152068Z\",\n"
-                                            + "  \"status\": 400,\n"
+                                            + "  \"status\": 500,\n"
                                             + "  \"message\": \"잘못된 요청입니다.\",\n"
                                             + "  \"details\": \"부서 코드는 필수입니다.\"\n"
                                             + "}"
@@ -70,7 +70,7 @@ public interface DepartmentApi {
                             examples = @ExampleObject(
                                     value = "{\n"
                                             + "  \"timestamp\": \"2025-03-06T05:39:06.152068Z\",\n"
-                                            + "  \"status\": 400,\n"
+                                            + "  \"status\": 404,\n"
                                             + "  \"message\": \"잘못된 요청입니다.\",\n"
                                             + "  \"details\": \"부서 코드는 필수입니다.\"\n"
                                             + "}"
@@ -83,7 +83,7 @@ public interface DepartmentApi {
                             examples = @ExampleObject(
                                     value = "{\n"
                                             + "  \"timestamp\": \"2025-03-06T05:39:06.152068Z\",\n"
-                                            + "  \"status\": 400,\n"
+                                            + "  \"status\": 500,\n"
                                             + "  \"message\": \"잘못된 요청입니다.\",\n"
                                             + "  \"details\": \"부서 코드는 필수입니다.\"\n"
                                             + "}"
@@ -107,7 +107,7 @@ public interface DepartmentApi {
                             examples = @ExampleObject(
                                     value = "{\n"
                                             + "  \"timestamp\": \"2025-03-06T05:39:06.152068Z\",\n"
-                                            + "  \"status\": 400,\n"
+                                            + "  \"status\": 404,\n"
                                             + "  \"message\": \"잘못된 요청입니다.\",\n"
                                             + "  \"details\": \"부서 코드는 필수입니다.\"\n"
                                             + "}"
@@ -133,7 +133,7 @@ public interface DepartmentApi {
                             examples = @ExampleObject(
                                     value = "{\n"
                                             + "  \"timestamp\": \"2025-03-06T05:39:06.152068Z\",\n"
-                                            + "  \"status\": 400,\n"
+                                            + "  \"status\": 500,\n"
                                             + "  \"message\": \"잘못된 요청입니다.\",\n"
                                             + "  \"details\": \"부서 코드는 필수입니다.\"\n"
                                             + "}"
@@ -157,7 +157,7 @@ public interface DepartmentApi {
                             examples = @ExampleObject(
                                     value = "{\n"
                                             + "  \"timestamp\": \"2025-03-06T05:39:06.152068Z\",\n"
-                                            + "  \"status\": 400,\n"
+                                            + "  \"status\": 404,\n"
                                             + "  \"message\": \"잘못된 요청입니다.\",\n"
                                             + "  \"details\": \"부서 코드는 필수입니다.\"\n"
                                             + "}"
@@ -170,7 +170,7 @@ public interface DepartmentApi {
                             examples = @ExampleObject(
                                     value = "{\n"
                                             + "  \"timestamp\": \"2025-03-06T05:39:06.152068Z\",\n"
-                                            + "  \"status\": 400,\n"
+                                            + "  \"status\": 500,\n"
                                             + "  \"message\": \"잘못된 요청입니다.\",\n"
                                             + "  \"details\": \"부서 코드는 필수입니다.\"\n"
                                             + "}"
@@ -207,7 +207,7 @@ public interface DepartmentApi {
                             examples = @ExampleObject(
                                     value = "{\n"
                                             + "  \"timestamp\": \"2025-03-06T05:39:06.152068Z\",\n"
-                                            + "  \"status\": 400,\n"
+                                            + "  \"status\": 500,\n"
                                             + "  \"message\": \"잘못된 요청입니다.\",\n"
                                             + "  \"details\": \"부서 코드는 필수입니다.\"\n"
                                             + "}"
