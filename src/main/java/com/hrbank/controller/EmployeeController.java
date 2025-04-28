@@ -63,7 +63,8 @@ public class EmployeeController {
       @RequestPart("employee") @Valid EmployeeCreateRequest request,
       @RequestPart(value = "profile", required = false) MultipartFile profileImage, HttpServletRequest httpRequest) {
     String ip = httpRequest.getRemoteAddr();
-    return ResponseEntity.ok(employeeService.create(request, profileImage, ip));
+    EmployeeDto createdEmployee = employeeService.create(request, profileImage, ip);
+    return ResponseEntity.ok(createdEmployee);
   }
 
   @Operation(summary = "직원 삭제")
