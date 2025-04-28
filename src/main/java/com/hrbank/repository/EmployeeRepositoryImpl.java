@@ -108,9 +108,6 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
 
   @Override
   public List<EmployeeTrendDto> findEmployeeTrends(LocalDate from, LocalDate to, String unit) {
-    // 날짜(date) 저장 -> count세기 -> change세기 -> change Rate 구하기(직전의 count, 이번의 change 필요)
-    // 제일 옛날의 날짜(13개중 1번째) count와 change는 0과 0으로. changeRate도 0.0으로. 이전 cnt가 0이면 증감률 0.0으로 나와야 함.
-    // from이 null이면 unit기준 12개 이전부터 구해야 하고, 아니라면 to까지 unit기준으로 구해야 함. 어렵다;
     if(to == null){
       to = LocalDate.now();
     }
