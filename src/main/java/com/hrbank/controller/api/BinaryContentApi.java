@@ -24,7 +24,7 @@ public interface BinaryContentApi {
                   + "\"status\": \"404\", "
                   + "\"message\": \"프로필 이미지를 찾을 수 없습니다.\", "
                   + "\"timestamp\": \"2025-03-06T05:39:06.152068Z\","
-                  + "\"details\": \"/api/files/}/2/download\"}"))),
+                  + "\"details\": \"/api/files/2/download\"}"))),
       @ApiResponse(responseCode = "500", description = "서버 오류",
           content = @Content(examples = @ExampleObject(
               value = "{\"code\": \"FILE_READ_ERROR\", "
