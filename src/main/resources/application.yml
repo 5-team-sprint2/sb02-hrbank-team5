@@ -17,11 +17,6 @@ spring:
       hibernate:
         format_sql: true
     open-in-view: false
-  http:
-    encoding:
-      charset: UTF-8
-      enabled: true
-      force: true
 
 logging:
   level:
@@ -33,3 +28,9 @@ hrbank:
     type: local
     local:
       root-path: .hrbank/storage
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
