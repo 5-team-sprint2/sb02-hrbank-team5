@@ -9,7 +9,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://trolley.proxy.rlwy.net:21354/railway
     username: postgres
-    password: gt
+    password: AFnnTDSSXnsxhSgqSHOSeQmipWxmVXfx
   jpa:
     hibernate:
       ddl-auto: validate        # 운영은 validate, 개발 초기에는 update/create 사용 가능
