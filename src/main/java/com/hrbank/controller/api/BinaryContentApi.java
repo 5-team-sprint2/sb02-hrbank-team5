@@ -1,5 +1,6 @@
 package com.hrbank.controller.api;
 
+import com.hrbank.dto.error.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -18,9 +19,9 @@ public interface BinaryContentApi {
       @ApiResponse(responseCode = "200", description = "다운로드 성공",
           content = @Content(mediaType = "*/*", schema = @Schema(type = "string", format = "binary"))),
       @ApiResponse(responseCode = "404", description = "파일을 찾을 수 없음",
-          content = @Content(mediaType = "*/*")),
-      @ApiResponse(responseCode = "500", description = "서버오류",
-          content = @Content(mediaType = "*/*"))
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "500", description = "서버 오류",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
   })
   ResponseEntity<Resource> download(@Parameter(description = "파일 ID") Long id);
 }
