@@ -7,9 +7,9 @@ spring:
       maxRequestSize: 30MB      # 한 번에 최대 업로드 가능 용량
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/hrbank
-    username: hrbank_user
-    password: hrbank1234
+    url: jdbc:postgresql://shuttle.proxy.rlwy.net:41441/postgres
+    username: postgres
+    password: dCTPWHXcliJlcOJJUJsUZTpXtFIWPCwD
   jpa:
     hibernate:
       ddl-auto: update        # 운영은 validate, 개발 초기에는 update/create 사용 가능
@@ -28,4 +28,4 @@ hrbank:
   storage:
     type: local
     local:
-      root-path: .hrbank/storage   # 실제 파일 저장 경로
+      root-path: /hrbank/storage #.hrbank/storage   # 실제 파일 저장 경로

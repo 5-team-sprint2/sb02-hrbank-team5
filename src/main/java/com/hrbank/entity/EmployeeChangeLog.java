@@ -30,7 +30,7 @@ public class EmployeeChangeLog {
 
   // 유형
   @Enumerated(EnumType.STRING)
-  @Column(columnDefinition = "employee_change_log_type", nullable = false)
+  @Column(nullable = false)
   private EmployeeChangeLogType type;
 
   // 사번

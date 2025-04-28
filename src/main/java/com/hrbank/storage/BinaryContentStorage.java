@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component;
 public class BinaryContentStorage {
   private final Path root;
 
-  public BinaryContentStorage(@Value(".hrbank/storage") Path root){
+  public BinaryContentStorage(@Value("/hrbank/storage") Path root){
     this.root = root;
   }
 
