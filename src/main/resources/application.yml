@@ -3,8 +3,8 @@ spring:
     name: hrbank
   servlet:
     multipart:
-      maxFileSize: 10MB         # 파일 하나의 최대 크기
-      maxRequestSize: 30MB      # 한 번에 최대 업로드 가능 용량
+      maxFileSize: 10MB
+      maxRequestSize: 30MB
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://postgres.railway.internal:5432/railway
@@ -12,17 +12,16 @@ spring:
     password: WxEbefZJVkMUNttPeppnOBIZgQbScOXK
   jpa:
     hibernate:
-      ddl-auto: create     # 운영은 validate, 개발 초기에는 update/create 사용 가능
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
-        # default_batch_fetch_size: 100  # 필요시 주석 해제
     open-in-view: false
-http:
-  encoding:
-    charset: UTF-8
-    enabled: true
-    force: true
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 
 logging:
   level:
@@ -33,4 +32,4 @@ hrbank:
   storage:
     type: local
     local:
-      root-path: .hrbank/storage   # 실제 파일 저장 경로
+      root-path: .hrbank/storage
