@@ -37,6 +37,7 @@
 <summary>📁 프로젝트 파일 구조</summary>
 <div markdown="1">
 
+```
 ├── src<br>
 │   └── main<br>
 │       ├── java<br>
@@ -150,7 +151,7 @@
 ├── .gitignore<br>
 ├── settings.gradle<br>
 ├── README.md<br>
-
+```
 </div>
 </details>
 
