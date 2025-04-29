@@ -37,6 +37,7 @@
 <summary>📁 프로젝트 파일 구조</summary>
 <div markdown="1">
 
+```
 ├── src<br>
 │   └── main<br>
 │       ├── java<br>
@@ -150,7 +151,7 @@
 ├── .gitignore<br>
 ├── settings.gradle<br>
 ├── README.md<br>
-
+```
 </div>
 </details>
 
@@ -242,10 +243,18 @@
 <summary>대시보드</summary>
 <div markdown="1">
 
-<img src="readmeImageFile/board.png" alt="대시보드.png" width="900"/>
-
 - 대시보드는 총 직원수, 최근 업데이트 수정건, 이번달 입사자 수, 마지막 백업 시간에 대한 정보를 보여준다.
-- 또한, 일별/주별/월별/분기별/연도별 직원의 수 추이를 그래프로 보여주고, 부서별&직함별 직원 분포 정보를 보여준다.
+- 또한, 일별/주별/월별/분기별/연도별 직원의 수 추이를 그래프로 보여주고, 부서별&직함별 직원 분포 정보를 보여준다. <br>
+
+- 월별 직원 수 추이<br>
+<img src="readmeImageFile/board_months.png" alt="대시보드_월별.png" width="900"/>
+
+
+- 일별 직원 수 추이<br>
+<img src="readmeImageFile/board_days.png" alt="대시보드_일별.png" width="900"/>
+
+- 분기별 직원 수 추이<br>
+<img src="readmeImageFile/board_quarters.png" alt="대시보드_분기별.png" width="900"/>
 
 </div>
 </details>
