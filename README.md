@@ -27,10 +27,10 @@
 - 대시보드 관리: 직원 수, 이력 건수, 월별 추이, 마지막 백업 시간, 직원 분포
 
 ### 🫙 ERD
-<img src="erd.png" alt="img_1" width="600"/>
+<img src="readmeImageFile/erd.png" alt="img_1" width="600"/>
 
 ### 🔧 배치 다이어그램
-<img src="batchD.png" alt="img_2" width="500"/>
+<img src="readmeImageFile/batchD.png" alt="img_2" width="500"/>
 
 ### 📁 파일 구조
 <details>
@@ -172,23 +172,65 @@
 <img src="https://img.shields.io/badge/Zep-914fc4?style=for-the-badge&logo=springboot&logoColor=white">
 <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=springboot&logoColor=white">
 
-## 🧑‍💻 팀원별 구현 기능 상세
-
-### 허재석
-
-### 김민식
-
-### 김보경
-
-### 김태희
-
-### 선혜린
-
-
 ## 🖥️ 구현 홈페이지 및 각 기능별 화면
 [[배포-HrBank 링크]](https://sb02-hrbank-team5-production-79ed.up.railway.app/)
 
+### 부서
 
+<details>
+<summary>부서</summary>
+<div markdown="1">
+
+
+</div>
+</details>
+
+### 직원
+
+<details>
+<summary>직원</summary>
+<div markdown="1">
+
+## 여기 안에 사진과 짧은 설명을 넣어주세요.
+
+</div>
+</details>
+
+### 직원 수정 이력
+
+<details>
+<summary>직원 수정 이력</summary>
+<div markdown="1">
+
+## 여기 안에 사진과 짧은 설명을 넣어주세요.
+
+</div>
+</details>
+
+### 데이터 백업
+
+<details>
+<summary>데이터 백업</summary>
+<div markdown="1">
+
+## 여기 안에 사진과 짧은 설명을 넣어주세요.
+
+</div>
+</details>
+
+### 대시보드
+
+<details>
+<summary>대시보드</summary>
+<div markdown="1">
+
+<img src="readmeImageFile/board.png" alt="대시보드.png" width="900"/>
+
+- 대시보드는 총 직원수, 최근 업데이트 수정건, 이번달 입사자 수, 마지막 백업 시간에 대한 정보를 보여준다.
+- 또한, 일별/주별/월별/분기별/연도별 직원의 수 추이를 그래프로 보여주고, 부서별&직함별 직원 분포 정보를 보여준다.
+
+</div>
+</details>
 
 ## 📜 프로젝트 4L 회고록
 
