@@ -181,6 +181,10 @@
 <summary>부서</summary>
 <div markdown="1">
 
+<img src="https://github.com/user-attachments/assets/62f90eac-ad00-4453-969d-d989826974d0" alt="부서관리.png" width="900"/>
+
+- 부서를 등록/조회/수정/삭제 할 수 있습니다.
+- 다양한 조건을 통한 검색 및 정렬 기능을 제공하고 있습니다.
 
 </div>
 </details>
