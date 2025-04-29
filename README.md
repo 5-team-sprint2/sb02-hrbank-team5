@@ -181,10 +181,13 @@
 <summary>부서</summary>
 <div markdown="1">
 
-<img src="readmeImageFile/department.png" alt="부서관리.png" width="900"/>
+<img src="readmeImageFile/department.png" alt="부서조회.png" width="900"/>
+<img src="readmeImageFile/departmentUpdate.png" alt="부서수정.png" width="900"/>
+<img src="readmeImageFile/departmentCreate.png" alt="부서등록.png" width="900"/>
 
 - 부서를 등록/조회/수정/삭제 할 수 있습니다.
 - 다양한 조건을 통한 검색 및 정렬 기능을 제공하고 있습니다.
+- 부서내의 직원이 있으면 부서 삭제 불가합니다.
 
 </div>
 </details>
