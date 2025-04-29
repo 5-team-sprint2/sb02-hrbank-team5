@@ -202,7 +202,10 @@
 <summary>직원 수정 이력</summary>
 <div markdown="1">
 
-## 여기 안에 사진과 짧은 설명을 넣어주세요.
+<img src="https://github.com/user-attachments/assets/c1506f08-55b9-4e2e-a63f-7c7a36ff0a08" alt="직원 수정 이력.png" width="900"/>
+    
+- 직원을 생성/수정/삭제한 경우 그 이력에 대한 정보를 보여줍니다.
+- 상세 정보 확인을 통해 어떤 항목이 변경되었는지 확인할 수 있으며, 다양한 조건을 통한 검색 및 정렬 기능을 제공하고 있습니다.
 
 </div>
 </details>
