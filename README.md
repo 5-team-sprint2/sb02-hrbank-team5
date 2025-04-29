@@ -192,7 +192,18 @@
 <summary>직원</summary>
 <div markdown="1">
 
-## 여기 안에 사진과 짧은 설명을 넣어주세요.
+#### 직원목록
+<img src="readmeImageFile/employees.png" alt="직원목록.png" width="900"/>
+
+#### 직원등록
+<img src="readmeImageFile/CreateEmployee.png" alt="직원등록.png" width="900"/>
+
+#### 직원수정
+<img src="readmeImageFile/UpdateEmployee.png" alt="직원수정.png" width="900"/>
+
+- 직원을 등록/수정/삭제/조회 할 수 있습니다.
+- 직원을 이름, 이메일, 부서명, 상태를 부분 일치로 검색할 수 있으며, 여러 조건을 조합해도 만족되는 결과만 출력됩니다.
+- 이름, 입사일, 사원번호를 기준으로 오름/내림차순 정렬할 수 있습니다.
 
 </div>
 </details>
@@ -217,7 +228,11 @@
 <summary>데이터 백업</summary>
 <div markdown="1">
 
-## 여기 안에 사진과 짧은 설명을 넣어주세요.
+<img src="readmeImageFile/backups.png" alt="대시보드.png" width="900"/>
+
+- 백업 페이지는 직원, 부서 등 주요 데이터를 CSV 파일로 저장하는 기능이다.
+- 사용자는 백업 이력을 조회하고, 생성된 백업 파일을 다운로드할 수 있다.
+- IP로 검색 및 시작시간, 종료시간, 상태에 따라 필터링 및 정렬할 수 있다.
 
 </div>
 </details>
