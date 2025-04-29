@@ -185,8 +185,10 @@
 ### 선혜린
 
 
-## 🖥️ 구현 홈페이지
+## 🖥️ 구현 홈페이지 및 각 기능별 화면
 [[배포-HrBank 링크]](https://sb02-hrbank-team5-production-79ed.up.railway.app/)
+
+
 
 ## 📜 프로젝트 4L 회고록
 
